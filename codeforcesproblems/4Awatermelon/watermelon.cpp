@@ -1,8 +1,6 @@
-//https://codeforces.com/problemset/problem/4/A
+#include "watermelon.h"
 
-#include watermelon.h
-bool watermelon(weight){
-    if weight %2 == 0 && weight !=2{
-        return True
-    }
+bool watermelon(int weight) {
+    // It must be even and not equal to 2 (because 1+1 is not even enough)
+    return weight % 2 == 0 && weight != 2;
 }

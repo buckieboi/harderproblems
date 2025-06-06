@@ -1,6 +1,6 @@
+#ifndef WATERMELON_H
+#define WATERMELON_H
 
-bool watermelon(weight){
-
-}
+bool watermelon(int weight);
 
 #endif
