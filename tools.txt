@@ -1,0 +1,28 @@
+decision tree
+
+
+
+
+
+
+
+### 104. Maximum Depth of Binary Tree
+- tool: recusion
+- big(o):
+- given input parameters:
+- chain of logic: check root exist, left/right moves down branches, return max
+- how it works:
+- notes and rules: account for root +1
+- entire code blocks used:
+
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if (!root) {return 0};
+
+        int leftDepth = maxDepth(root->left);
+        int rightDepth = maxDepth(root->right);
+
+        return max(leftDepth, rightDepth) + 1;
+    }
+};
