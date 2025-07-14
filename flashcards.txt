@@ -1,0 +1,333 @@
+### flashcard template (problem title)
+- tool:
+- big(o):
+- given input parameters:
+- chain of logic:
+- how it works:
+- notes and rules:
+- entire code blocks used:
+
+
+### remove element 26
+- tool: two pointers
+- big(o):
+- given input parameters:
+- chain of logic:
+- how it works:
+- notes and rules:
+- entire code blocks used:
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int i = 0;
+
+        for (int j = 0; j < nums.size(); ++j) {
+            if (nums[j] != val) {nums[i] = nums[j],++i;}
+        }
+        return i;
+    }
+};
+
+
+### 31. next permutations
+- tool: greed + two pointers
+- big(o):
+- given input parameters:
+- chain of logic:
+- how it works:
+- notes and rules:
+- entire code blocks used:
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        int i = nums.size() - 2;
+
+        while (i >= 0 && nums[i] >= nums[i + 1]) {i--;}
+
+        if (i >= 0) {
+            int j = nums.size() - 1;
+            while (nums[j] <= nums[i]) {j--;}
+            swap(nums[i], nums[j]);
+        }
+
+        reverse(nums.begin() + i + 1, nums.end());
+    }
+};
+
+### removeduplicates 26
+- tool: 2pointers
+- big(o): o(n)
+- chain of logic: check nums empty, check and overwrite j when same as i, return unique numbers i.
+- why use tool: sorted, in-place operations
+- notes and rules:
+- entire code blocks used:
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        if (nums.empty()) {return 0;}
+        int i = 0;
+
+        for (int j = 1; j < nums.size(); j++) {
+            if (nums[j] != nums[i]) {i++, nums[i] = nums[j];}
+        }
+        return i + 1;
+    }
+};
+
+
+---
+
+### Twosum
+- hashmap
+- O(n)
+- compare 2 values in list
+- given integer list, target value
+- make complement value, check complmenet, add to seen map and move on.
+- 
+vector<int> twoSum(vector<int>& nums, int target) {
+unordered_map<int, int> seen;
+for (int i = 0; i < nums.size(); i++) {
+    int d = t - nums[i];
+    if (seen.count(d)) return {seen[d], i};
+    seen[nums[i]] = i;
+}
+return {};
+}
+---
+
+### 232: implement Queue using stacks
+- classes, queue
+- implement queue
+- queue pop front, stack pop back, stack in and out, push elements 'in' stack, pop/peek when out is empty, dump 'in' into out (reverses order), then pop 'out'.
+- classes need {...} for methods
+- make in/out stacks, push into in, 
+- Push goes IN, Peek and Pop go OUT. If OUT is empty, TRANSFER to get the front.
+```cpp
+class MyQueue {
+    stack<int> in, out;
+public:
+    void push(int x) { in.push(x); }
+    
+    int pop() {
+        if (out.empty()) transfer();
+        int val = out.top();
+        out.pop();
+        return val;
+    }
+    
+    int peek() {
+        if (out.empty()) transfer();
+        return out.top();
+    }
+    
+    bool empty() { return in.empty() && out.empty(); }
+    
+private:
+    void transfer() {while (!in.empty()) out.push(in.top()), in.pop();}
+};
+```
+
+---
+### ransomNote
+- tool: hashmap
+- big(o): o(n)
+- given input parameters: 2 strings
+- key phrases to remember logic:
+- how it works? build string in hashmap and reduce to prove false, else true.
+- notes and rules:
+- code blocks used:
+---
+
+
+```cpp
+class Solution {
+public:
+    bool canConstruct(string ransomNote, string magazine) {
+        unordered_map<char, int> count;
+        for (char c : magazine) count[c]++;
+        for (char c : ransomNote) {
+            if (--count[c] < 0) return false;
+        }
+        return true;
+    }
+};
+```
+
+---
+
+
+### firstBadverison
+- tool: binary search(first occurence)
+- big(o): logn?
+- given input parameters: integer n, boolean firstBadVersion()
+- logic chain: left right mid trackers, right move to mid, move left till return.
+- how it works? 
+- notes and rules:
+- code blocks used:
+
+```cpp
+
+int firstBadVersion(int n) {
+	int left = 1, right = n;
+	while (left < right) {
+		int mid = left + (right - left) / 2;
+		if (isBadVersion(mid)) {right = mid;} 
+		else {left = mid + 1;}
+	}
+	return left;
+}
+```
+
+---
+
+
+### 704. Binary Search
+
+- tool: binary search (exact value)
+- big(o): logn
+- given input parameters: vector& nums (sorted list), int target
+- logic chain: left/right/mid made, compare mid of nums to target, move left right bounds, move till mid match or -1 return.
+- how it works? use binary search to narrow search range for target, adjust left/right based on mid value
+- notes and rules: use `<=` in loop condition, compare value not index, use `mid = left + (right - left) / 2` to avoid overflow, sorted list
+- code blocks used:
+
+```cpp
+int search(vector<int>& nums, int target) {
+    int left = 0, right = nums.size() - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] == target) return mid;
+        else if (nums[mid] < target) left = mid + 1;
+        else right = mid - 1;
+    }
+    return -1;
+}
+```
+--- 
+
+
+
+### Longest Substring Without Repeating Characters
+
+- tool: sliding window + hashmap
+    
+- big(o): O(n)
+    
+- given input parameters: string s
+    
+- logic chain: use hashmap to store last seen index of char, move start pointer past repeat, track max window size
+    
+- how it works? scan string with two pointers, adjust left if repeat found, update map and max length
+    
+- notes and rules: hash map holds char → index, `if seen[c] >= start` → adjust `start`, answer is `end - start + 1`
+    
+- code blocks used:
+    
+
+```cpp
+int lengthOfLongestSubstring(string s) {
+    unordered_map<char, int> seen;
+    int maxLen = 0, start = 0;
+    for (int end = 0; end < s.size(); ++end) {
+        if (seen.count(s[end]) && seen[s[end]] >= start){start = seen[s[end]] + 1;}
+        seen[s[end]] = end;
+        maxLen = max(maxLen, end - start + 1);
+    }
+    return maxLen;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+### ## 2. **Valid Parentheses**
+
+- **Big O**: O(n)
+    
+- **Tool used**: Stack + Hash Map
+    
+- **Why**: Need to match pairs in correct order and close brackets must match the last opened
+    
+- **Key Phrases**: push open, check on close, pop if matches, stack empty = valid
+    
+
+```cpp
+stack<char> st;
+unordered_map<char, char> match = {{')', '('}, {']', '['}, {'}', '{'}};
+for (char c : s) {
+    if (match.count(c)) {
+        if (st.empty() || st.top() != match[c]) return false;
+        st.pop();
+    } else {
+        st.push(c);
+    }
+}
+return st.empty();
+```
+
+---
+
+### ## 6. **Merge Two Sorted Lists**
+
+- **Big O**: O(n + m)
+    
+- **Tool used**: Dummy Node + Pointer
+    
+- **Why**: Compare node values and stitch together one sorted list
+    
+- **Key Phrases**: use dummy, compare node->val, advance tail, attach remainder
+    
+
+```cpp
+ListNode dummy, *tail = &dummy;
+while (l1 && l2) {
+    if (l1->val < l2->val) tail->next = l1, l1 = l1->next;
+    else tail->next = l2, l2 = l2->next;
+    tail = tail->next;
+}
+tail->next = l1 ? l1 : l2;
+return dummy.next;
+```
+
+---
+
+### ## 7. **Has Cycle (Linked List)**
+
+- **Big O**: O(n)
+    
+- **Tool used**: Two Pointers (Floyd’s Tortoise & Hare)
+    
+- **Why**: Detect loop by fast/slow pointer collision
+    
+- **Key Phrases**: slow and fast pointers, if they meet = cycle, fast must exist
+    
+
+```cpp
+ListNode *slow = head, *fast = head;
+while (fast && fast->next) {
+    slow = slow->next;
+    fast = fast->next->next;
+    if (slow == fast) return true;
+}
+return false;
+```
+
+---
+
+Let me know if you'd like me to export this as a `.md` file, build a full `cpp-templates.md` index, or auto-generate this as code + explanation in folders. You're building a solid base.
+
+
+
+
+## 231A
