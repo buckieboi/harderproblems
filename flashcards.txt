@@ -8,6 +8,137 @@
 - entire code blocks used:
 
 
+
+### flashcard template (problem title)
+- tool:
+- big(o):
+- given input parameters:
+- chain of logic:
+- how it works:
+- notes and rules:
+- entire code blocks used:
+class Solution {
+public:
+    TreeNode* sortedArrayToBST(vector<int>& nums) {
+        return buildBST(nums, 0, nums.size() - 1);
+    }
+
+private:
+    TreeNode* buildBST(vector<int>& nums, int left, int right) {
+        if (left > right) return nullptr;
+
+        int mid = left + (right - left) / 2;
+        TreeNode* node = new TreeNode(nums[mid]);
+
+        node->left = buildBST(nums, left, mid - 1);
+        node->right = buildBST(nums, mid + 1, right);
+
+        return node;
+    }
+};
+
+
+### integer to roman
+- tool:greedy
+- big(o):
+- given input parameters:
+- chain of logic:
+- how it works:
+- notes and rules:
+- entire code blocks used:
+class Solution {
+public:
+    string intToRoman(int num) {
+        vector<pair<int, string>> roman = {
+            {1000, "M"}, {900, "CM"}, {500, "D"}, {400, "CD"},
+            {100,  "C"}, {90,  "XC"}, {50,  "L"}, {40,  "XL"},
+            {10,   "X"}, {9,   "IX"}, {5,   "V"}, {4,   "IV"},
+            {1,    "I"}
+        };
+        
+        string result = "";
+        for (const auto& [value, symbol] : roman) {
+            while (num >= value) {result += symbol,num -= value;}
+        }
+        return result;
+    }
+};
+
+
+
+### flashcard template (problem title)
+- tool: bst dfs
+- big(o):
+- given input parameters:
+- chain of logic:
+- how it works:
+- notes and rules:
+- entire code blocks used:
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> result;
+        inorder(root, result);
+        return result;
+    }
+
+private:
+    void inorder(TreeNode* node, vector<int>& result) {
+        if (!node) return;
+        inorder(node->left, result);       
+        result.push_back(node->val);       
+        inorder(node->right, result);
+    }
+};
+
+### move Zeroes 283
+- tool: two pointers
+- big(o):
+- given input parameters:
+- chain of logic:
+- how it works:
+- notes and rules:
+- entire code blocks used:
+
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums) {
+        int p2 = 0; 
+        // First pass: Move all non-zero elements forward
+        for (int p1 = 0; p1 < nums.size(); p1++) {
+            if (nums[p1] != 0) {nums[p2++] = nums[p1];}
+        }
+
+        // Second pass: Fill the remaining positions with 0s
+        while (p2 < nums.size()) {nums[p2++] = 0;}
+    }
+};
+
+
+### Merge sorted arrays 88.
+- tool: two pointers
+- big(o):o(m + n)
+- given input parameters:
+- chain of logic: p1/p2/ p made backwards, compare p1 and p2 which to add to back of p, p2 add back as leftovers.
+- how it works:
+- notes and rules:
+- entire code blocks used:
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        int p1 = m-1, p2 = n-1, p = m + n - 1;
+
+        while (p1 >= 0 && p2 >= 0) {
+            if (nums1[p1] > nums2[p2]) {nums1[p--] = nums1[p1--];}
+            else {nums1[p--] = nums2[p2--];}
+        }
+
+        // If nums2 still has elements
+        while (p2 >= 0) {nums1[p--] = nums2[p2--];}
+    }
+};
+
+
 ### remove element 26
 - tool: two pointers
 - big(o):
